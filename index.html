@@ -46,7 +46,8 @@ function init() {
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
-  document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }));
+  const button = ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] });
+  document.body.appendChild(button);
 
   // Reticle
   reticle = new THREE.Mesh(
@@ -58,7 +59,7 @@ function init() {
   scene.add(reticle);
 
   // Light
-  const light = new THREE.HemisphereLight(0x00ffff, 0xbbbbff, 1);
+  const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
   light.position.set(0.5, 1, 0.25);
   scene.add(light);
 
@@ -66,22 +67,33 @@ function init() {
   const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
   const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 }); // Default color
   cube = new THREE.Mesh(geometry, material);
-  cube.visible = false; // Initially hide the cube
+  cube.visible = false; 
   scene.add(cube);
 
   // Get color parameter from URL
   const urlParams = new URLSearchParams(window.location.search);
   const colorParam = urlParams.get('color');
-  console.log(colorParam);
   if (colorParam) {
-    const colorValue = parseInt(colorParam, 10); // Parse as integer
-    if (!isNaN(colorValue)) {
-      const color = new THREE.Color(colorValue); // Create color from number
-      cube.material.color = color;
-    } else {
-      console.error('Invalid color parameter:', colorParam);
+    try {
+      const colorValue = parseInt(colorParam, 10); 
+      if (!isNaN(colorValue)) {
+        const color = new THREE.Color(colorValue); 
+        cube.material.color = color;
+      } else {
+        console.error('Invalid color parameter:', colorParam);
+      }
+    } catch (error) {
+      console.error('Error setting color:', error);
     }
   }
+
+  // Event listener for placing the cube when AR button is clicked
+  button.addEventListener('click', () => {
+    if (reticle.visible) {
+      cube.position.setFromMatrixPosition(reticle.matrix);
+      cube.visible = true;
+    }
+  });
 }
 
 function animate() {
@@ -100,12 +112,6 @@ function render(timestamp, frame) {
         const hit = hitTestResults[0];
         reticle.visible = true;
         reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
-
-        // Place the cube at the reticle's position on first tap
-        if (!cube.visible) {
-          cube.position.setFromMatrixPosition(reticle.matrix);
-          cube.visible = true;
-        }
       } else {
         reticle.visible = false;
       }
@@ -114,6 +120,7 @@ function render(timestamp, frame) {
 
   renderer.render(scene, camera);
 }
+
 </script>
 </body>
 </html>
