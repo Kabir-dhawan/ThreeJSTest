@@ -72,6 +72,7 @@ function init() {
   // Get color parameter from URL
   const urlParams = new URLSearchParams(window.location.search);
   const colorParam = urlParams.get('color');
+  console.log(colorParam);
   if (colorParam) {
     const colorValue = parseInt(colorParam, 10); // Parse as integer
     if (!isNaN(colorValue)) {
