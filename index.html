@@ -49,10 +49,18 @@ function init() {
   // Get color parameter from URL 
   const urlParams = new URLSearchParams(window.location.search);
   const colorParam = urlParams.get('color');
+
   if (colorParam) {
-    // Convert hex color string to Three.js color
-    const color = new THREE.Color(colorParam);
-    cube.material.color = color;
+    try {
+      // Attempt to convert the parameter to a Three.js color
+      const color = new THREE.Color(colorParam);
+      cube.material.color.set(color); // Use set() method to update the color
+      console.log('Color changed to:', color); // Log the color for debugging
+    } catch (error) {
+      console.error('Invalid color parameter:', colorParam, error); // Log the error
+    }
+  } else {
+    console.log('No color parameter found in URL.'); // Log if no parameter is found
   }
 }
 
