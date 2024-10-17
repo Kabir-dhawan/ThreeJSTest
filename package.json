@@ -1,11 +1,13 @@
 {
+  "homepage": "http://kabir-dhawan.github.io/ThreeJSTest/#",
   "name": "r3f-webxr",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
