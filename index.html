@@ -1,78 +1,14 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Three.js Colored Cube</title>
-<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-<style>
-body { margin: 0; }
-canvas { display: block; }
-</style>
-</head>
-<body>
-
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js"
-    }
-  }
-</script>
-
-<script type="module">
-import * as THREE from 'three';
-
-let scene, camera, renderer, cube;
-
-init();
-animate();
-
-function init() {
-  scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-  renderer = new THREE.WebGLRenderer();
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  document.body.appendChild( renderer.domElement );
-
-  const geometry = new THREE.BoxGeometry();
-  const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } ); // Default color
-  cube = new THREE.Mesh( geometry, material );
-  scene.add( cube );
-
-  camera.position.z = 5;
-
-  // Get color parameter from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const colorParam = urlParams.get('color');
-
-  if (colorParam) {
-    try {
-      // Parse the color parameter as an integer
-      const colorValue = parseInt(colorParam, 10);
-
-      // Check if it's a valid number
-      if (!isNaN(colorValue)) {
-        // Create a Three.js color from the number
-        const color = new THREE.Color(colorValue);
-        cube.material.color.set(color); // Use set() method to update the color
-        console.log('Color changed to:', color); // Log the color for debugging
-      } else {
-        console.error('Invalid color parameter:', colorParam); // Log an error if invalid
-      }
-    } catch (error) {
-      console.error('Error setting color:', error); // Log any other errors
-    }
-  } else {
-    console.log('No color parameter found in URL.'); // Log if no parameter is found
-  }
-}
-
-function animate() {
-  requestAnimationFrame( animate );
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-  renderer.render( scene, camera );
-}
-</script>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>R3F + Webxr</title>
+    <script type="module" crossorigin src="/assets/index-edaffdfa.js"></script>
+    <link rel="stylesheet" href="/assets/index-051e54d7.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    
+  </body>
 </html>
